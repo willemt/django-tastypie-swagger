@@ -195,12 +195,12 @@ class ResourceSwaggerMapping(object):
                                     # Django 1.5+.
                                     field = QUERY_TERMS
 
-                        elif field == ALL_WITH_RELATIONS: # Show all params from related model
-                            # Add a subset of filter only foreign-key compatible on the relation itself.
-                            # We assume foreign keys are only int based.
-                            field = ['gt','in','gte', 'lt', 'lte','exact'] # TODO This could be extended by checking the actual type of the relational field, but afaik it's also an issue on tastypie.
-                            related_resource = self.resource.fields[name].get_related_resource(None)
-                            related_mapping = ResourceSwaggerMapping(related_resource)
+#                        elif field == ALL_WITH_RELATIONS: # Show all params from related model
+#                            # Add a subset of filter only foreign-key compatible on the relation itself.
+#                            # We assume foreign keys are only int based.
+#                            field = ['gt','in','gte', 'lt', 'lte','exact'] # TODO This could be extended by checking the actual type of the relational field, but afaik it's also an issue on tastypie.
+#                            related_resource = self.resource.fields[name].get_related_resource(None)
+#                            related_mapping = ResourceSwaggerMapping(related_resource)
 
                             #parameters.extend(related_mapping.build_parameters_from_filters(prefix="%s%s__" % (prefix, name)))
 
@@ -228,6 +228,8 @@ class ResourceSwaggerMapping(object):
                                     description=description,
                                 ))
                             else:
+                                if query in ['gt', 'in', 'gte', 'lt', 'lte']:
+                                    continue
                                 parameters.append(self.build_parameter(
                                     paramType="query",
                                     name="%s%s__%s" % (prefix, name, query),
