@@ -426,16 +426,14 @@ class ResourceSwaggerMapping(object):
             )
         return properties
 
-    def build_model(self, resource_name, id, properties):
+    def build_model(self, resource_name, id, properties, required_properites=None):
         model = {
             resource_name: {
                 'properties': properties,
                 'id': id
             }
         }
-        # A required parameters
-        requireds = [p['name'] for p in properties.itervalues() if p.get('required', False)]
-        if 0 < len(requireds):
+        if required_properites:
             model.update('required', requireds)
         return model
 
@@ -516,7 +514,9 @@ class ResourceSwaggerMapping(object):
                 self.build_model(
                     resource_name='%s_post' % self.resource._meta.resource_name,
                     properties=self.build_properties_from_fields(method='post'),
-                    id='%s_post' % self.resource_name
+                    id='%s_post' % self.resource_name,
+                    required_properites=[name for name, field in self.schema['fields'].items()
+                                         if not field['blank'] and not field.get('readonly', None)]
                 )
             )
 
