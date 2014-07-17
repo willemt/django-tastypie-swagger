@@ -434,7 +434,7 @@ class ResourceSwaggerMapping(object):
             }
         }
         if required_properties:
-            model.update('required', required_properties)
+            model[resource_name]['required'] = required_properties
         return model
 
     def build_list_models_and_properties(self):
