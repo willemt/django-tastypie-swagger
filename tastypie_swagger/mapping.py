@@ -228,8 +228,7 @@ class ResourceSwaggerMapping(object):
                                     description=description,
                                 ))
                             else:
-                                if query in ['gt', 'in', 'gte', 'lt', 'lte']:
-                                    continue
+                                continue
                                 parameters.append(self.build_parameter(
                                     paramType="query",
                                     name="%s%s__%s" % (prefix, name, query),
