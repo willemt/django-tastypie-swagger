@@ -427,13 +427,17 @@ class ResourceSwaggerMapping(object):
         return properties
 
     def build_model(self, resource_name, id, properties):
-        return {
+        model = {
             resource_name: {
                 'properties': properties,
                 'id': id
             }
         }
-
+        # A required parameters
+        requireds = [p['name'] for p in properties.itervalues() if p['required']]
+        if 0 < len(requireds):
+            model.update('required', requireds)
+        return model
 
     def build_list_models_and_properties(self):
         models = {}
