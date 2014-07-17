@@ -434,7 +434,7 @@ class ResourceSwaggerMapping(object):
             }
         }
         # A required parameters
-        requireds = [p['name'] for p in properties.itervalues() if p['required']]
+        requireds = [p['name'] for p in properties.itervalues() if p.get('required', False)]
         if 0 < len(requireds):
             model.update('required', requireds)
         return model
